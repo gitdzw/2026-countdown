@@ -1,217 +1,85 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>2026 倒计时 - iOS 桌面快捷指令</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="距 2027 年还剩多少？年月日时分秒实时倒计时">
+<meta name="mobile-web-app-capable" content="yes">
+<title>2026 倒计时</title>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    padding: 20px; -webkit-font-smoothing: antialiased;
-  }
-  .card {
-    background: rgba(255,255,255,0.95); backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-radius: 24px; padding: 36px 28px; max-width: 400px; width: 100%;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.3); text-align: center;
-  }
-  .icon { font-size: 52px; margin-bottom: 10px; }
-  h1 { font-size: 22px; font-weight: 700; color: #1d1d1f; margin-bottom: 2px; }
-  .subtitle { font-size: 14px; color: #86868b; margin-bottom: 20px; }
-
-  .countdown-box {
-    background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%);
-    border: 1px solid #667eea33;
-    border-radius: 16px; padding: 20px 16px; margin-bottom: 24px;
-  }
-  .countdown-label { font-size: 12px; color: #888; margin-bottom: 8px; letter-spacing: 2px; }
-  .cd-row { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
-  .cd-unit {
-    display: flex; flex-direction: column; align-items: center;
-    min-width: 56px;
-  }
-  .cd-num {
-    font-size: 32px; font-weight: 800;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2; font-variant-numeric: tabular-nums;
-  }
-  .cd-label {
-    font-size: 11px; color: #999; margin-top: 2px;
-  }
-  .cd-sep {
-    font-size: 28px; color: #ccc; align-self: center; padding-bottom: 14px;
-  }
-
-  .total-days {
-    font-size: 13px; color: #888; margin-top: 8px;
-  }
-  .total-days strong { color: #667eea; font-weight: 700; }
-
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    width: 100%; padding: 16px 24px; font-size: 17px; font-weight: 600;
-    border: none; border-radius: 14px; cursor: pointer;
-    transition: all 0.2s; text-decoration: none; -webkit-tap-highlight-color: transparent;
-  }
-  .btn:active { transform: scale(0.97); }
-  .btn-primary {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: white; margin-bottom: 10px;
-  }
-  .btn-secondary {
-    background: #f5f5f7; color: #333; margin-bottom: 10px;
-  }
-  .btn-secondary:active { background: #e8e8ed; }
-
-  .steps { text-align: left; margin-top: 20px; }
-  .step {
-    display: flex; gap: 10px; align-items: flex-start;
-    margin-bottom: 12px; font-size: 14px; color: #444; line-height: 1.4;
-  }
-  .step-num {
-    background: #f0f0f5; border-radius: 50%;
-    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 700; color: #667eea; flex-shrink: 0; margin-top: 1px;
-  }
-  .note {
-    font-size: 12px; color: #aaa; margin-top: 14px; line-height: 1.5;
-    padding: 10px; background: #fafafa; border-radius: 10px;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    .card { background: rgba(30,30,40,0.95); }
-    h1 { color: #f0f0f0; }
-    .subtitle { color: #888; }
-    .countdown-box { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
-    .step { color: #bbb; }
-    .step-num { background: #333; color: #667eea; }
-    .btn-secondary { background: #2a2a35; color: #ddd; }
-    .btn-secondary:active { background: #333340; }
-    .note { background: rgba(255,255,255,0.05); color: #777; }
-    .cd-sep { color: #555; }
-    .cd-label { color: #777; }
-    .total-days { color: #777; }
-  }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;-webkit-font-smoothing:antialiased;color:#fff;
+}
+.card{
+  background:rgba(255,255,255,0.08);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
+  border-radius:28px;padding:40px 28px;max-width:400px;width:100%;
+  text-align:center;border:1px solid rgba(255,255,255,0.1);
+}
+.icon{font-size:56px;margin-bottom:8px;}
+h1{font-size:24px;font-weight:700;margin-bottom:2px;}
+.sub{font-size:14px;opacity:.5;margin-bottom:24px;}
+.cd-box{
+  background:rgba(255,255,255,0.05);border-radius:20px;padding:24px 16px;margin-bottom:28px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.cd-label{font-size:11px;opacity:.4;letter-spacing:2px;margin-bottom:12px;}
+.cd-row{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;}
+.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:52px;}
+.cd-num{
+  font-size:36px;font-weight:800;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;line-height:1.2;font-variant-numeric:tabular-nums;
+}
+.cd-lbl{font-size:10px;opacity:.4;margin-top:2px;}
+.cd-sep{font-size:30px;opacity:.2;align-self:center;padding-bottom:14px;}
+.total{font-size:13px;opacity:.4;margin-top:10px;}
+.total strong{color:#667eea;opacity:1;}
+.footer{font-size:11px;opacity:.2;margin-top:20px;}
 </style>
 </head>
 <body>
 <div class="card">
   <div class="icon">📅</div>
   <h1>2026 倒计时</h1>
-  <p class="subtitle">距离 2027 年还有</p>
-
-  <div class="countdown-box">
-    <div class="countdown-label">⏳ 实时倒计时</div>
-    <div class="cd-row" id="countdownDisplay">
-      <div class="cd-unit"><span class="cd-num" id="cd-months">--</span><span class="cd-label">月</span></div>
+  <p class="sub">距离 2027 年还有</p>
+  <div class="cd-box">
+    <div class="cd-label">实时倒计时</div>
+    <div class="cd-row">
+      <div class="cd-unit"><span class="cd-num" id="m">--</span><span class="cd-lbl">月</span></div>
       <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-days">--</span><span class="cd-label">天</span></div>
+      <div class="cd-unit"><span class="cd-num" id="d">--</span><span class="cd-lbl">天</span></div>
       <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-hours">--</span><span class="cd-label">时</span></div>
+      <div class="cd-unit"><span class="cd-num" id="h">--</span><span class="cd-lbl">时</span></div>
       <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-minutes">--</span><span class="cd-label">分</span></div>
+      <div class="cd-unit"><span class="cd-num" id="i">--</span><span class="cd-lbl">分</span></div>
       <span class="cd-sep">:</span>
-      <div class="cd-unit"><span class="cd-num" id="cd-seconds">--</span><span class="cd-label">秒</span></div>
+      <div class="cd-unit"><span class="cd-num" id="s">--</span><span class="cd-lbl">秒</span></div>
     </div>
-    <div class="total-days">累计 <strong id="totalDays">--</strong> 天</div>
+    <div class="total">累计 <strong id="td">--</strong> 天</div>
   </div>
-
-  <a href="shortcuts://x-callback-url/import-shortcut?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgitdzw%2F2026-countdown%2Fmain%2F2026-countdown.shortcut" class="btn btn-primary" style="margin-bottom:10px;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:8px">⚡ 在快捷指令中打开 (推荐)</a>
-
-  <button class="btn btn-primary" id="downloadBtn">⬇️ 下载快捷指令 (.shortcut)</button>
-
-  <div class="steps">
-    <div class="step"><span class="step-num">1</span><span>点上面按钮下载文件</span></div>
-    <div class="step"><span class="step-num">2</span><span>点分享 <span style="font-size:16px">📤</span> → 选「快捷指令」导入</span></div>
-    <div class="step"><span class="step-num">3</span><span>桌面添加：长按快捷指令 → 添加到主屏幕</span></div>
-    <div class="step"><span class="step-num">4</span><span>如用桌面小组件：长按桌面 → <strong>+</strong> → 快捷指令 → 选本快捷指令</span></div>
-  </div>
-
-  <a href="shortcuts://import-shortcut?url=https%3A%2F%2Fraw.githubusercontent.com%2Fgitdzw%2F2026-countdown%2Fmain%2F2026-countdown.shortcut" class="btn btn-secondary" style="margin-bottom:10px;text-decoration:none;display:inline-flex;justify-content:center;align-items:center;gap:8px">⚡ 备用安装方式</a>
-
-  <div class="note">
-    💡 先点「在快捷指令中打开」按钮，失败再点「下载快捷指令」 → 点文件 → 分享给「快捷指令」
-  </div>
+  <div class="footer">在 Safari 点分享 📤 → 添加到主屏幕</div>
 </div>
-
 <script>
-// 实时倒计时更新
-function updateCountdown() {
-  const now = new Date();
-  const target = new Date(now.getFullYear() + 1, 0, 1); // Jan 1 next year 00:00
-
-  const diff = target - now;
-  if (diff <= 0) {
-    document.getElementById('cd-months').textContent = '00';
-    document.getElementById('cd-days').textContent = '00';
-    document.getElementById('cd-hours').textContent = '00';
-    document.getElementById('cd-minutes').textContent = '00';
-    document.getElementById('cd-seconds').textContent = '00';
-    document.getElementById('totalDays').textContent = '0';
-    return;
-  }
-
-  const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
-  document.getElementById('totalDays').textContent = totalDays.toLocaleString();
-
-  // Compute months, days, hours, minutes, seconds
-  let d = new Date(now);
-  let months = 0;
-  
-  // Count remaining months
-  while (true) {
-    let nextMonth = new Date(d.getFullYear(), d.getMonth() + 1, 1);
-    if (nextMonth < target) {
-      months++;
-      d = nextMonth;
-    } else {
-      break;
-    }
-  }
-
-  // Remaining days after months
-  const afterMonths = new Date(d);
-  const remainingMs = target - afterMonths;
-  const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((remainingMs % (1000 * 60)) / 1000);
-
-  document.getElementById('cd-months').textContent = String(months).padStart(2, '0');
-  document.getElementById('cd-days').textContent = String(days).padStart(2, '0');
-  document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
-  document.getElementById('cd-minutes').textContent = String(minutes).padStart(2, '0');
-  document.getElementById('cd-seconds').textContent = String(seconds).padStart(2, '0');
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-// Base64 embedded .shortcut fileconst SHORTCUT_B64 = "YnBsaXN0MDDfEA8BAgMEBQYHCAkKCwwNDg8QQkNEGUVMTV9gYWQZZWZfEBFXRldvcmtmbG93QWN0aW9uc18QF1dGV29ya2Zsb3dDbGllbnRSZWxlYXNlXxAXV0ZXb3JrZmxvd0NsaWVudFZlcnNpb25fEBZXRldvcmtmbG93Q3JlYXRpb25EYXRlXxAbV0ZXb3JrZmxvd0hhc091dHB1dEZhbGxiYWNrXldGV29ya2Zsb3dJY29uXxAZV0ZXb3JrZmxvd0ltcG9ydFF1ZXN0aW9uc18QIVdGV29ya2Zsb3dJbnB1dENvbnRlbnRJdGVtQ2xhc3Nlc18QHldGV29ya2Zsb3dNaW5pbXVtQ2xpZW50VmVyc2lvbl8QJFdGV29ya2Zsb3dNaW5pbXVtQ2xpZW50VmVyc2lvblN0cmluZ18QGVdGV29ya2Zsb3dOb0lucHV0QmVoYXZpb3JfECJXRldvcmtmbG93T3V0cHV0Q29udGVudEl0ZW1DbGFzc2VzXxAXV0ZXb3JrZmxvd1Nob3VsZEJlTW9kYWxfEBJXRldvcmtmbG93U3VidGl0bGVfEA9XRldvcmtmbG93VHlwZXOkERokNdISExQVXxAaV0ZXb3JrZmxvd0FjdGlvbklkZW50aWZpZXJfEBpXRldvcmtmbG93QWN0aW9uUGFyYW1ldGVyc18QImlzLndvcmtmbG93LmFjdGlvbnMuZ2V0Y3VycmVudGRhdGXSFhcYGVRVVUlEXxARV0ZEYXRlWm9uZWRPdXRwdXRfECQwRkRGMzRFRS05RDE2LTRCQUItODNCNy00REEwOEI5NTUyNjQI0hITGxxfECdpcy53b3JrZmxvdy5hY3Rpb25zLmdldHRpbWViZXR3ZWVuZGF0ZXPUFh0eHyAhIiNfEBZXRlRpbWVCZXR3ZWVuRGF0ZXNEYXRlXxAcV0ZUaW1lQmV0d2VlbkRhdGVzUmVzb2x1dGlvbl8QFldGVGltZUJldHdlZW5EYXRlc1VuaXRfECQ1ODlDOUU3RS1FMzIwLTRBNjgtODE4NS04OEJDMUE0REZCRERfEBhKYW51YXJ5IDEsIDIwMjcgYXQgMDA6MDBcTWF4aW11bSBUaW1lVERheXPSEhMlJl8QH2lzLndvcmtmbG93LmFjdGlvbnMuc2V0dmFyaWFibGXTFicoKSo0V1dGSW5wdXReV0ZWYXJpYWJsZU5hbWVfECQwMjgwODI3RC1EQzE0LTRCODAtQjQyQS0wQ0ZFQ0NENUYxMEPSKywtM1VWYWx1ZV8QE1dGU2VyaWFsaXphdGlvblR5cGXTLi8wMSAyWk91dHB1dE5hbWVaT3V0cHV0VVVJRFRUeXBlXxASVGltZSBCZXR3ZWVuIERhdGVzXEFjdGlvbk91dHB1dF8QFVdGVGV4dFRva2VuQXR0YWNobWVudGRSaU9ZWSllcNISEzY3XxAdaXMud29ya2Zsb3cuYWN0aW9ucy5zaG93YWxlcnTVFjg5Oic7GTw9Pl8QHldGQWxlcnRBY3Rpb25DYW5jZWxCdXR0b25TaG93bl8QEVdGQWxlcnRBY3Rpb25UZXh0XxASV0ZBbGVydEFjdGlvblRpdGxlXxAkQTAzRkMyQTktQjhGOS00NDFDLTkxM0YtREMzQ0Y3ODY2MkNEYVkpa9g93MUAIAAyADAAMgA2XnQAII/YUmnSKyw/M9MuLzA0QEFfECQ4MDFGNzM3NS1BQjQ3LTREQjMtOTNCMS01QTQ5MDk0RjNFMDRYVmFyaWFibGVYaU9TIDE4LjBUMTIwMDNByAUgDgAAANNGR0hJSktfEBlXRldvcmtmbG93SWNvbkdseXBoTnVtYmVyXxAXV0ZXb3JrZmxvd0ljb25JbWFnZURhdGFfEBhXRldvcmtmbG93SWNvblN0YXJ0Q29sb3IR6XhAE///////AAD/oK8QEU5PUFFSU1RVVldYWVpbXF1eXxAYV0ZBcHBTdG9yZUFwcENvbnRlbnRJdGVtXxAUV0ZBcnRpY2xlQ29udGVudEl0ZW1dV0ZDb250ZW50SXRlbV8QGFdGR2VuZXJpY0ZpbGVDb250ZW50SXRlbV8QEldGSW1hZ2VDb250ZW50SXRlbV8QGldGaVR1bmVzUHJvZHVjdENvbnRlbnRJdGVtXxAVV0ZMb2NhdGlvbkNvbnRlbnRJdGVtXxAXV0ZEQ01hcHNMaW5rQ29udGVudEl0ZW1fEBRXRkFWQXNzZXRDb250ZW50SXRlbV8QEFdGUERGQ29udGVudEl0ZW1fEBhXRlBob25lTnVtYmVyQ29udGVudEl0ZW1fEBVXRlJpY2hUZXh0Q29udGVudEl0ZW1fEBpXRlNhZmFyaVdlYlBhZ2VDb250ZW50SXRlbV8QE1dGU3RyaW5nQ29udGVudEl0ZW1fEBBXRlVSTENvbnRlbnRJdGVtXxAUV0ZDb250YWN0Q29udGVudEl0ZW1fEBlXRkVtYWlsQWRkcmVzc0NvbnRlbnRJdGVtEQOEUzkwMNFiY18QG2lzLndvcmtmbG93Lm5vaW5wdXRiZWhhdmlvcgmgawAyADAAMgA2XnSP2FJpWRpcEVkp/x+iZ2hYTkNXaWRnZXRVV2F0Y2gACAApAD0AVwBxAIoAqAC3ANMA9wEYAT8BWwGAAZoBrwHBAcYBywHoAgUCKgIvAjQCSAJvAnACdQKfAqgCwQLgAvkDIAM7A0gDTQNSA3QDewODA5IDuQO+A8QD2gPhA+wD9wP8BBEEHgQ2BD8ERARkBG8EkASkBLkE4ATjBPoE/wUGBS0FNgU/BUQFTQVUBXAFigWlBagFqQWyBbMFxwXiBfkGBwYiBjcGVAZsBoYGnQawBssG4wcABxYHKQdAB1wHXwdjB2YHhAeFB4YHnQegB6kAAAAAAAACAQAAAAAAAABpAAAAAAAAAAAAAAAAAAAHrw==";
-
-document.getElementById('downloadBtn').addEventListener('click', function() {
-  const byteChars = atob(SHORTCUT_B64);
-  const bytes = new Uint8Array(byteChars.length);
-  for (let i = 0; i < byteChars.length; i++) {
-    bytes[i] = byteChars.charCodeAt(i);
-  }
-  const blob = new Blob([bytes], { type: 'application/octet-stream' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = '2026倒计时.shortcut';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(() => URL.revokeObjectURL(url), 10000);
-});</script>
+(function u(){
+  const n=new Date(),o=new Date(n.getFullYear()+1,0,1),f=o-n;
+  document.getElementById('td').textContent=Math.floor(f/864e5).toLocaleString();
+  let d=new Date(n),m=0;
+  for(;new Date(d.getFullYear(),d.getMonth()+1,1)<o;){m++;d=new Date(d.getFullYear(),d.getMonth()+1,1)}
+  const r=o-d,x=r%864e5;
+  document.getElementById('m').textContent=String(m).padStart(2,'0');
+  document.getElementById('d').textContent=String(Math.floor(r/864e5)).padStart(2,'0');
+  document.getElementById('h').textContent=String(Math.floor(x/36e5)).padStart(2,'0');
+  document.getElementById('i').textContent=String(Math.floor(x%36e5/6e4)).padStart(2,'0');
+  document.getElementById('s').textContent=String(Math.floor(x%6e4/1e3)).padStart(2,'0');
+  setTimeout(u,1e3);
+})();
+</script>
 </body>
 </html>
