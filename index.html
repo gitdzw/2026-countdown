@@ -6,6 +6,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>2026 倒计时</title>
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
 <style>
@@ -15,42 +18,50 @@ body{
   background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
   min-height:100vh;display:flex;align-items:center;justify-content:center;
   padding:20px;-webkit-font-smoothing:antialiased;color:#fff;
+  overflow:hidden;
 }
 .card{
   background:rgba(255,255,255,0.08);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);
-  border-radius:28px;padding:40px 28px;max-width:400px;width:100%;
+  border-radius:28px;padding:40px 24px;max-width:380px;width:100%;
   text-align:center;border:1px solid rgba(255,255,255,0.1);
 }
 .icon{font-size:56px;margin-bottom:8px;}
-h1{font-size:24px;font-weight:700;margin-bottom:2px;}
-.sub{font-size:14px;opacity:.5;margin-bottom:24px;}
+h1{font-size:22px;font-weight:700;margin-bottom:2px;}
+.sub{font-size:13px;opacity:.5;margin-bottom:20px;}
 .cd-box{
-  background:rgba(255,255,255,0.05);border-radius:20px;padding:24px 16px;margin-bottom:28px;
+  background:rgba(255,255,255,0.05);border-radius:20px;padding:20px 12px;
   border:1px solid rgba(255,255,255,0.08);
 }
-.cd-label{font-size:11px;opacity:.4;letter-spacing:2px;margin-bottom:12px;}
-.cd-row{display:flex;justify-content:center;gap:4px;flex-wrap:wrap;}
-.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:52px;}
+.cd-row{display:flex;justify-content:center;gap:2px;flex-wrap:nowrap;}
+.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:48px;}
 .cd-num{
-  font-size:36px;font-weight:800;
+  font-size:38px;font-weight:800;
   background:linear-gradient(135deg,#667eea,#764ba2);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;line-height:1.2;font-variant-numeric:tabular-nums;
+  background-clip:text;line-height:1.15;font-variant-numeric:tabular-nums;
+  transition:transform .1s;
 }
-.cd-lbl{font-size:10px;opacity:.4;margin-top:2px;}
-.cd-sep{font-size:30px;opacity:.2;align-self:center;padding-bottom:14px;}
-.total{font-size:13px;opacity:.4;margin-top:10px;}
+.cd-num.tick{animation:tickPulse .2s ease-out;}
+@keyframes tickPulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+.cd-lbl{font-size:9px;opacity:.4;margin-top:1px;text-transform:uppercase;letter-spacing:1px;}
+.cd-sep{font-size:32px;opacity:.15;align-self:center;padding-bottom:12px;font-weight:200;}
+.total{font-size:13px;opacity:.4;margin-top:8px;}
 .total strong{color:#667eea;opacity:1;}
-.footer{font-size:11px;opacity:.2;margin-top:20px;}
+.progress-bar{margin-top:16px;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#667eea,#764ba2);transition:width 1s linear;}
+.footer{font-size:10px;opacity:.2;margin-top:16px;}
 </style>
 </head>
 <body>
 <div class="card">
-  <div class="icon">📅</div>
+  <div class="icon">&#x1F4C5;</div>
   <h1>2026 倒计时</h1>
   <p class="sub">距离 2027 年还有</p>
   <div class="cd-box">
-    <div class="cd-label">实时倒计时</div>
     <div class="cd-row">
       <div class="cd-unit"><span class="cd-num" id="m">--</span><span class="cd-lbl">月</span></div>
       <span class="cd-sep">:</span>
@@ -62,23 +73,38 @@ h1{font-size:24px;font-weight:700;margin-bottom:2px;}
       <span class="cd-sep">:</span>
       <div class="cd-unit"><span class="cd-num" id="s">--</span><span class="cd-lbl">秒</span></div>
     </div>
-    <div class="total">累计 <strong id="td">--</strong> 天</div>
+    <div class="total">已过 <strong id="elapsed">0</strong>% &middot; 还剩 <strong id="td">--</strong> 天</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
   </div>
-  <div class="footer">在 Safari 点分享 📤 → 添加到主屏幕</div>
+  <div class="footer">Safari 分享 &#x1F4E4; &#x2192; 添加到主屏幕</div>
 </div>
 <script>
 (function u(){
-  const n=new Date(),o=new Date(n.getFullYear()+1,0,1),f=o-n;
+  var n=new Date(),t=new Date(n.getFullYear(),0,1),o=new Date(n.getFullYear()+1,0,1);
+  var total=o-t,elapsed=n-t;
+  document.getElementById('elapsed').textContent=(elapsed/total*100).toFixed(1);
+  document.getElementById('progressFill').style.width=(elapsed/total*100)+'%';
+  var f=o-n;
   document.getElementById('td').textContent=Math.floor(f/864e5).toLocaleString();
-  let d=new Date(n),m=0;
+  var d=new Date(n),m=0;
   for(;new Date(d.getFullYear(),d.getMonth()+1,1)<o;){m++;d=new Date(d.getFullYear(),d.getMonth()+1,1)}
-  const r=o-d,x=r%864e5;
-  document.getElementById('m').textContent=String(m).padStart(2,'0');
-  document.getElementById('d').textContent=String(Math.floor(r/864e5)).padStart(2,'0');
+  var r=o-d,x=r%864e5;
+  var secs=Math.floor(x%6e4/1e3);
+  var el_s=document.getElementById('s');
+  if(el_s.textContent!=String(secs).padStart(2,'0')){
+    el_s.textContent=String(secs).padStart(2,'0');
+    el_s.classList.remove('tick');void el_s.offsetWidth;el_s.classList.add('tick');
+  }
+  var mins=Math.floor(x%36e5/6e4);
+  var el_i=document.getElementById('i');
+  if(el_i.textContent!=String(mins).padStart(2,'0')){
+    el_i.textContent=String(mins).padStart(2,'0');
+    el_i.classList.remove('tick');void el_i.offsetWidth;el_i.classList.add('tick');
+  }
   document.getElementById('h').textContent=String(Math.floor(x/36e5)).padStart(2,'0');
-  document.getElementById('i').textContent=String(Math.floor(x%36e5/6e4)).padStart(2,'0');
-  document.getElementById('s').textContent=String(Math.floor(x%6e4/1e3)).padStart(2,'0');
-  setTimeout(u,1e3);
+  document.getElementById('d').textContent=String(Math.floor(r/864e5)).padStart(2,'0');
+  document.getElementById('m').textContent=String(m).padStart(2,'0');
+  setTimeout(u,500);
 })();
 </script>
 </body>
